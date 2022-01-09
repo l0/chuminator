@@ -1,11 +1,12 @@
-# arch packages available (pacman -Ss <package>)
-pyside2
-pyzmq
-sqlalchemy
-
-# install in venv (pip install <package>)
 coinbase
-jax[cpu]
+jax[cpu] # pip install --upgrade "jax[cpu]" for now
 krakenex
+pyqt5
+pyqt3d
+pyqtchart
+pyqtdatavisualization
 python-binance
+pyzmq
 qdarkstyle
+sqlalchemy
+yfinance
