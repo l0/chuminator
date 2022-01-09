@@ -1,0 +1,11 @@
+# arch packages available (pacman -Ss <package>)
+pyside2
+pyzmq
+sqlalchemy
+
+# install in venv (pip install <package>)
+coinbase
+jax[cpu]
+krakenex
+python-binance
+qdarkstyle
