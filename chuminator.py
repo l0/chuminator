@@ -1,17 +1,8 @@
-# import binance as bnc
-# import coinbase as cnb
-# import jax.numpy
-# import jax.numpy as jnp
-# import krakenex as krk
-# import PyQt5.Qt3DCore as qttd
-import PyQt5.QtChart as qtch
 import PyQt5.QtCore as qtco
-# import PyQt5.QtDataVisualization as qtdv
-import PyQt5.QtGui as qtgu
+import PyQt5.QtChart as qtch
 import PyQt5.QtWidgets as qtwi
-# import qdarkstyle as qds
-# import sqlalchemy as sa
-# import zmq as zmq
+import PyQt5.QtGui as qtgu
+import sys
 import yfinance as yf
 
 
@@ -20,9 +11,10 @@ def yf_get_history(symbol):
     return ticker.history(period="30d")
 
 
-def get_chart(symbol, data_reader):
+def get_chart(symbol):
+    data_reader = yf_get_history(symbol)
     cstick_series = qtch.QCandlestickSeries()
-    cstick_series.setName(symbol)
+    cstick_series.setName("days")
     cstick_series.setIncreasingColor(qtgu.QColorConstants.Green)
     cstick_series.setDecreasingColor(qtgu.QColorConstants.Red)
     dates = []
@@ -56,12 +48,20 @@ def get_chart(symbol, data_reader):
 
 def go():
     a = qtwi.QApplication(sys.argv)
-    symbol = "btc-usd"
-    hist_df = yf_get_history(symbol)
-    chart_view = get_chart(symbol, hist_df)
-    window = qtwi.QMainWindow()
-    window.setCentralWidget(chart_view)
-    window.show()
+    wind = qtwi.QMainWindow()
+    grid = qtwi.QGridLayout()
+    widg = qtwi.QWidget()
+    widg.setLayout(grid)
+    wind.setCentralWidget(widg)
+    symbols = ['btc-usd', 'eth-usd', 'bnb-usd',
+               'usdt-usd', 'sol-usd', 'usdc-usd',
+               'ada-usd', 'xrp-usd', 'luna1-usd']
+    positions = [(i, j) for i in range(3) for j in range(3)]
+    for position, symbol in zip(positions, symbols):
+        if symbol == '':
+            continue
+        grid.addWidget(get_chart(symbol), *position)
+    wind.show()
     while True:
         if a.hasPendingEvents():
             a.processEvents()
