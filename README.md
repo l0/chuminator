@@ -1,4 +1,3 @@
-# https://www.youtube.com/watch?v=FFnBojF1zmo
-
-cd chez
-scheme --libdirs ".:l0:libs:libs/nanopass"
+* step0: chuminator.py
+* step1: profit!
+* step2: chuminator.ss
