@@ -1,3 +1,4 @@
+import datetime
 import PyQt5.QtCore as qtco
 import PyQt5.QtChart as qtch
 import PyQt5.QtWidgets as qtwi
@@ -6,15 +7,11 @@ import sys
 import yfinance as yf
 
 
-def yf_get_history(symbol):
+def get_chart(symbol, interval, start, end):
     ticker = yf.Ticker(symbol)
-    return ticker.history(period="30d")
-
-
-def get_chart(symbol):
-    data_reader = yf_get_history(symbol)
+    data_reader = ticker.history(interval=interval, start=start, end=end)
     cstick_series = qtch.QCandlestickSeries()
-    cstick_series.setName("days")
+    cstick_series.setName(interval)
     cstick_series.setIncreasingColor(qtgu.QColorConstants.Green)
     cstick_series.setDecreasingColor(qtgu.QColorConstants.Red)
     dates = []
@@ -32,7 +29,7 @@ def get_chart(symbol):
     chart = qtch.QChart()
     chart.setTheme(qtch.QChart.ChartThemeDark)
     chart.addSeries(cstick_series)
-    chart.setTitle(symbol)
+    chart.setTitle(str(symbol) + " " + str(start) + " " + str(end))
     chart.createDefaultAxes()
     axis_x = chart.axes(qtco.Qt.Horizontal)[0]
     axis_x.setCategories(dates)
@@ -60,7 +57,10 @@ def go():
     for position, symbol in zip(positions, symbols):
         if symbol == '':
             continue
-        grid.addWidget(get_chart(symbol), *position)
+        interval = "1h"
+        end = datetime.datetime.now()
+        start = end - datetime.timedelta(days=2)
+        grid.addWidget(get_chart(symbol, interval, start, end), *position)
     wind.show()
     while True:
         if a.hasPendingEvents():
